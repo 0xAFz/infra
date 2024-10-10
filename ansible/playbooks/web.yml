@@ -1,0 +1,18 @@
+---
+- hosts: web
+  become: yes
+  vars:
+    domain: "{{ lookup('env', 'DOMAIN') | default('')  }}"
+    email: "{{ lookup('env', 'EMAIL') | default('') }}"
+    web_root: "{{ lookup('env', 'WEB_ROOT') | default('/var/www/html')  }}"
+
+  pre_tasks:
+    - name: Fail if domain or email is not set
+      fail:
+        msg: "DOMAIN or EMAIL environment variable is not set."
+      when: domain == "" or email == ""
+      
+  roles: 
+    - ../roles/iptables
+    - ../roles/nginx
+    
