@@ -1,0 +1,40 @@
+server {
+    listen 80;
+    server_name www.{{ domain }} {{ domain  }};
+    return 301 https://{{ domain  }}$request_uri;
+}
+
+server {
+	listen 443 http2 ssl;
+    server_name www.{{ domain  }} {{ domain  }};
+
+    ssl_certificate /etc/letsencrypt/live/{{ domain }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ domain }}/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/{{ domain }}/chain.pem;
+    access_log /var/log/nginx/{{ domain }}.access.log;
+    error_log /var/log/nginx/{{ domain }}.error.log;
+
+    location = /favicon.ico {
+        log_not_found off;
+        access_log off;
+    }
+
+    location = /robots.txt {
+        allow all;
+        log_not_found off;
+        access_log off;
+    }
+
+    add_header X-Frame-Options "DENY";
+    add_header X-Content-Type-Options "nosniff";
+    add_header X-XSS-Protection "1; mode=block";
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+
+	index index.html index.nginx-debian.html;
+	root {{ web_root  }};
+
+	location / {
+		try_files $uri $uri/ =404;
+	}
+}
+

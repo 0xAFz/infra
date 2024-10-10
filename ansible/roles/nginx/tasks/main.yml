@@ -1,0 +1,36 @@
+---
+
+- name: Install web tools
+  package:
+    update_cache: yes
+    name:
+      - nginx
+      - certbot
+      - python3-certbot-nginx
+    state: present
+
+- name: Check if certs dir exists
+  stat:
+    path: /etc/letsencrypt/live/{{ domain }}/
+  register: certs_file
+
+- name: Get certificates
+  shell: |
+    iptables -F
+    systemctl stop nginx
+    certbot certonly --standalone --preferred-challenges http -d {{ domain }} --non-interactive --agree-tos -m {{ email }}
+    systemctl start nginx
+    systemctl restart iptables
+  changed_when: false
+  when: not certs_file.stat.exists
+
+- name: Copy nginx config to remote server
+  template:
+    src:  nginx.j2
+    dest: /etc/nginx/conf.d/{{ domain }}.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - Reload nginx
+
