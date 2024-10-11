@@ -13,6 +13,6 @@
       when: domain == "" or email == ""
       
   roles: 
-    - ../roles/iptables
+    - ../roles/preparing
     - ../roles/nginx
     

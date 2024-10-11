@@ -1,0 +1,21 @@
+---
+- name: Configure limits.conf
+  become: yes
+  template:
+    src: limits.conf.j2
+    dest: /etc/security/limits.conf
+    backup: yes
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Configure coredump.conf
+  become: yes
+  template:
+    src: coredump.conf.j2
+    dest: /etc/systemd/coredump.conf
+    backup: yes
+    mode: 0644
+    owner: root
+    group: root
+
