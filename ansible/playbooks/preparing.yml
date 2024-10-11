@@ -1,0 +1,9 @@
+---
+- hosts: all
+  name: Preparing
+  become: yes
+  gather_facts: yes
+  roles: 
+    - role: ../roles/preparing
+      tags: preparing
+
