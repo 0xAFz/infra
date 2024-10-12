@@ -1,5 +1,6 @@
-module "nova" {
-  source         = "./modules"
+module "vm" {
+  source = "./modules/vm"
+
   os_auth_url    = var.os_auth_url
   os_username    = var.os_username
   os_password    = var.os_password
@@ -12,5 +13,17 @@ module "nova" {
   keypair_name   = var.keypair_name
   pubkey_path    = var.pubkey_path
   instance_count = var.instance_count
+}
+
+module "dns" {
+  source = "./modules/dns"
+
+  domain               = var.cloudflare_domain
+  account_id           = var.cloudflare_account_id
+  cloudflare_api_token = var.cloudflare_api_token
+  zone_id              = var.cloudflare_zone_id
+
+  instance_ips   = module.vm.instance_public_ips
+  instance_names = module.vm.instance_names
 }
 

@@ -59,5 +59,12 @@ variable "keypair_name" {
 variable "instance_count" {
   description = "OpenStack instance count"
   type        = number
+  default     = 1
+}
+
+variable "security_groups" {
+  description = "List of security groups to assign to the instance"
+  type        = list(string)
+  default     = ["allow_all"]
 }
 

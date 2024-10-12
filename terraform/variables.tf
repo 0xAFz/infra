@@ -1,3 +1,23 @@
+variable "cloudflare_domain" {
+  description = "Cloudflare domain"
+  type        = string
+}
+
+variable "cloudflare_account_id" {
+  description = "Cloudflare account id"
+  type        = string
+}
+
+variable "cloudflare_api_token" {
+  description = "Cloudflare api token"
+  type        = string
+}
+
+variable "cloudflare_zone_id" {
+  description = "Cloudflare zone id"
+  type        = string
+}
+
 variable "os_username" {
   description = "OpenStack username"
   type        = string
@@ -59,5 +79,12 @@ variable "keypair_name" {
 variable "instance_count" {
   description = "OpenStack instance count"
   type        = number
+  default     = 1
+}
+
+variable "security_groups" {
+  description = "List of security groups to assign to the instance"
+  type        = list(string)
+  default     = ["allow_all"]
 }
 
