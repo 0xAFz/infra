@@ -18,6 +18,7 @@ module "vm" {
 module "dns" {
   source = "./modules/dns"
 
+  count                = var.use_dns ? 1 : 0
   domain               = var.cloudflare_domain
   account_id           = var.cloudflare_account_id
   cloudflare_api_token = var.cloudflare_api_token
@@ -25,5 +26,9 @@ module "dns" {
 
   instance_ips   = module.vm.instance_public_ips
   instance_names = module.vm.instance_names
+
+  providers = {
+    cloudflare = cloudflare
+  }
 }
 

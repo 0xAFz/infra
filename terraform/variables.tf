@@ -88,3 +88,9 @@ variable "security_groups" {
   default     = ["allow_all"]
 }
 
+variable "use_dns" {
+  description = "Using dns module Optional"
+  type        = bool
+  default     = false
+}
+
